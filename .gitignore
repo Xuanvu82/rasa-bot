@@ -1,3 +1,4 @@
 ".rasa/cache/" 
 "venv/" 
 "models/" 
+"venv/" 
