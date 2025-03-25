@@ -25,4 +25,5 @@ steps:
   - '5005'
   
 options:
-  cloudStorageLogsBucket: 'gs://rasa-bot'
+  logging:
+    cloudStorageLogsBucket: 'gs://rasa-bot'
