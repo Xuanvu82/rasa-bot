@@ -1,0 +1,36 @@
+name: Deploy Rasa to Google Cloud Run
+
+on:
+  push:
+    branches:
+      - main  # Chạy khi có thay đổi trên branch main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Build and push Docker image
+        run: |
+          gcloud auth configure-docker
+          docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/rasa-bot:latest .
+          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/rasa-bot:latest
+
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy rasa-bot \
+            --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/rasa-bot:latest \
+            --platform managed \
+            --region asia-southeast1 \
+            --allow-unauthenticated
