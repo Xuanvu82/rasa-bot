@@ -27,3 +27,4 @@ steps:
 options:
   logging:
     cloudStorageLogsBucket: 'gs://rasa-bot'
+    loggingMode: CLOUD_STORAGE_ONLY
