@@ -1,0 +1,25 @@
+steps:
+  # Build the Docker image
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'asia-southeast1-docker.pkg.dev/$PROJECT_ID/rasa-repo/rasa-bot:$SHORT_SHA', '.']
+
+  # Push the Docker image to Google Container Registry
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'asia-southeast1-docker.pkg.dev/$PROJECT_ID/rasa-repo/rasa-bot:$SHORT_SHA']
+
+  # Deploy the service to Cloud Run
+- name: 'gcr.io/google-cloud-sdk'
+  entrypoint: 'gcloud'
+  args:
+  - 'run'
+  - 'deploy'
+  - 'rasa-bot'
+  - '--image'
+  - 'asia-southeast1-docker.pkg.dev/$PROJECT_ID/rasa-repo/rasa-bot:$SHORT_SHA'
+  - '--platform'
+  - 'managed'
+  - '--region'
+  - 'asia-southeast1'
+  - '--allow-unauthenticated'
+  - '--port'
+  - '5005'
