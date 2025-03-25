@@ -23,5 +23,5 @@ steps:
   - '--allow-unauthenticated'
   - '--port'
   - '5005'
-  options:
+options:
   logsBucket: 'gs://rasa-bot'
