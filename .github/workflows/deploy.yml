@@ -36,3 +36,8 @@ jobs:
             --platform managed \
             --region asia-southeast1 \
             --allow-unauthenticated
+
+    env:
+      GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+      GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+
